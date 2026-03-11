@@ -1,16 +1,37 @@
-# React + Vite
+# Beer Rent App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cotizador de alquiler de barriles y servicio para eventos.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 20+
+- npm 10+
 
-## React Compiler
+## Scripts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `npm run dev`: inicia el entorno de desarrollo
+- `npm run build`: compila para producción
+- `npm run preview`: previsualiza el build
+- `npm run lint`: valida estilo y reglas de React Hooks
 
-## Expanding the ESLint configuration
+## Reglas de negocio actuales
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- En modalidad **eventos** el mínimo es de **50 personas**.
+- Se calcula automáticamente una **seña del 30%** al confirmar el pedido.
+- Para barriles, el total depende de:
+  - tipo de bebida,
+  - litros,
+  - hielo opcional,
+  - tipo de equipo.
+
+## Estructura principal
+
+- `src/App.jsx`: pantalla principal y flujo de reserva.
+- `src/datosCerveza.js`: catálogo de productos y servicios.
+- `src/App.css`: estilos principales de la aplicación.
+
+## Próximas mejoras sugeridas
+
+- Separar `App.jsx` en componentes (`Header`, `FormularioReserva`, `ResumenPrecio`, etc.).
+- Mover utilidades de cálculo y armado de mensaje a `src/utils/`.
+- Agregar tests de lógica para precios y validaciones.
