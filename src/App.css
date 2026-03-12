@@ -99,6 +99,132 @@ body {
 
 @media (max-width: 900px) {
   .content-grid-stable { grid-template-columns: 1fr; padding: 15px; }
-  .sidebar-static { width: 100%; display: none; } /* Ocultamos fotos en movil para priorizar el form */
+  .sidebar-static { width: 100%; display: block; }
+  .photo-sticky-box { position: static; }
+  .slider-container-fixed {
+    max-width: 420px;
+    margin: 0 auto 16px;
+    aspect-ratio: 16 / 10;
+  }
   .form-card-premium { padding: 20px; }
+}
+.slider-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.slider-btn {
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.slider-dots {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.slider-dot.active {
+  background: var(--gold);
+}
+
+.footer-dev {
+  margin-top: 28px;
+  border-top: 2px solid rgba(212, 160, 23, 0.6);
+  background: rgba(212, 160, 23, 0.1);
+  padding: 20px 12px 26px;
+  text-align: center;
+  color: #f3d990;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: grid;
+  place-items: center;
+  z-index: 1200;
+  padding: 16px;
+}
+
+.modal-card {
+  width: min(460px, 100%);
+  background: #141414;
+  border: 1px solid rgba(212, 160, 23, 0.4);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  padding: 22px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.modal-title.success,
+.modal-title.info {
+  color: var(--gold);
+}
+
+.modal-title.warning {
+  color: #f8d34f;
+}
+
+.modal-title.error {
+  color: #ff7b7b;
+}
+
+.modal-text {
+  margin: 12px 0 20px;
+  color: #ddd;
+  line-height: 1.45;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-btn {
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+.modal-btn.primary {
+  background: var(--gold);
+  color: #111;
+}
+
+.modal-btn.ghost {
+  background: transparent;
+  color: var(--gold);
 }
