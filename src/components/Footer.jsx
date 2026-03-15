@@ -35,20 +35,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <hr className="footer-divider" />
-
-        <div className="footer-credits">
-          <div className="dev-info">
-            <Code size={16} className="dev-icon" />
-            <span>Desarrollado por: <b>Evelyn Sepulveda</b></span>
-          </div>
-          <div className="dev-info">
-            <Phone size={16} className="dev-icon" />
-            <span>Telefono: <a href="tel:2266530777" className="dev-link">2266530777</a></span>
-          </div>
-        </div>
-
         <div className="footer-terms">
+          <div className="footer-copy">© MOND Cerveza Artesanal 2026</div>
           <details>
             <summary>Terminos y Condiciones del Servicio</summary>
             <div className="terms-body">
@@ -67,7 +55,7 @@ const Footer = () => {
               <p><b>5. Danos, perdidas o faltantes</b></p>
               <p>El cliente sera responsable por cualquier dano, rotura, perdida, faltante o robo total o parcial del equipamiento entregado. En caso de que ocurra cualquiera de estas situaciones, el cliente debera abonar el costo total de reparacion o reposicion del elemento afectado segun los valores vigentes establecidos por MOND Cerveza Artesanal.</p>
               <p><b>6. Valores de reposicion de referencia</b></p>
-              <p>Barril de acero inoxidable → USD 150; Conector de barril → USD 90; Party pump → USD 120; Tubo de CO2 → USD 180; Regulador primario → USD 120; Regulador secundario → USD 70; Canilla de acero inoxidable → USD 60; Pilon cervecero → USD 250; Mangueras de cerveza o gas → USD 30; Frapera → USD 60; Barra cervecera → USD 300; Sistema de iluminacion → USD 80; Carro cervecero completo → valor a cotizar segun danos.</p>
+              <p>Barril de acero inoxidable - USD 150; Conector de barril - USD 90; Party pump - USD 120; Tubo de CO2 - USD 180; Regulador primario - USD 120; Regulador secundario - USD 70; Canilla de acero inoxidable - USD 60; Pilon cervecero - USD 250; Mangueras de cerveza o gas - USD 30; Frapera - USD 60; Barra cervecera - USD 300; Sistema de iluminacion - USD 80; Carro cervecero completo - valor a cotizar segun danos.</p>
               <p>Los valores podran actualizarse sin previo aviso en funcion del costo de reposicion del equipamiento.</p>
               <p><b>7. Manipulacion del sistema</b></p>
               <p>Queda prohibido desmontar, modificar o manipular reguladores de gas, manometros, conexiones, mangueras o cualquier componente tecnico del sistema de despacho. Cualquier dano ocasionado por manipulacion indebida sera responsabilidad exclusiva del cliente.</p>
@@ -89,7 +77,19 @@ const Footer = () => {
             </div>
           </details>
         </div>
-        <div className="footer-copy">© MOND Cerveza Artesanal 2026</div>
+
+        <hr className="footer-divider" />
+
+        <div className="footer-credits">
+          <div className="dev-info">
+            <Code size={16} className="dev-icon" />
+            <span>Desarrollado por: <b>Evelyn Sepulveda</b></span>
+          </div>
+          <div className="dev-info">
+            <Phone size={16} className="dev-icon" />
+            <span>Telefono: <a href="tel:2266530777" className="dev-link">2266530777</a></span>
+          </div>
+        </div>
       </div>
     </footer>
   );
