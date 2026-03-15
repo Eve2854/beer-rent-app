@@ -12,25 +12,32 @@ import ServiceSelector from './components/ServiceSelector';
 import DeliveryForm from './components/DeliveryForm';
 import ReservationInfo from './components/ReservationInfo';
 import PriceSummary from './components/PriceSummary';
+import Footer from './components/Footer';
 
 import { useImageSlider } from './hooks/useImageSlider';
 import { calcularPrecioTotal } from './utils/pricing';
 import { buildOrderMessage } from './utils/orderMessage';
-import { ALIAS_MP, IMAGENES_BARRA, IMAGENES_CARRO, IMAGENES_CHOPERA, NUMERO_DUENIO } from './constants/appConstants';
+import { ALIAS_MP, IMAGENES_BARRA, IMAGENES_CARRO, IMAGENES_CHOPERA, MP_BACKEND_URL, NUMERO_DUENIO } from './constants/appConstants';
 
 function App() {
   const [modalidad, setModalidad] = useState('barriles');
-  const [tipoProducto, setTipoProducto] = useState('cerveza');
+  
+  // Estado para selección múltiple de barriles
+  const [seleccionBarriles, setSeleccionBarriles] = useState({
+    cerveza: { activo: true, litros: 10 },
+    gin: { activo: false, litros: 10 }
+  });
+
   const [tipoEvento, setTipoEvento] = useState('solo_cerveza');
   const [cantidadPersonas, setCantidadPersonas] = useState(50);
-
-  const [litros, setLitros] = useState(10);
   const [conHielo, setConHielo] = useState(false);
   const [equipo, setEquipo] = useState('chopera');
+  const [metodoEnvio, setMetodoEnvio] = useState('coordinar');
+  const [metodoPago, setMetodoPago] = useState('efectivo');
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [datos, setDatos] = useState({ nombre: '', dni: '', telefono: '', direccion: '', comentarios: '' });
 
-  const { imagenesActuales, indexImagen, handleUserInteraction, reiniciarSlider } = useImageSlider({
+  const { imagenesActuales, indexImagen, handleUserInteraction, reiniciarSlider, isPaused } = useImageSlider({
     modalidad,
     equipo,
     imagenesChopera: IMAGENES_CHOPERA,
@@ -38,19 +45,19 @@ function App() {
     imagenesCarro: IMAGENES_CARRO,
   });
 
+  // Cálculo del precio total (Llamando a la utilidad pricing.js)
   const precioTotal = useMemo(
     () =>
       calcularPrecioTotal({
         productos,
         modalidad,
-        tipoProducto,
+        seleccionBarriles,
         tipoEvento,
         cantidadPersonas,
-        litros,
         conHielo,
         equipo,
       }),
-    [modalidad, tipoProducto, tipoEvento, cantidadPersonas, litros, conHielo, equipo],
+    [modalidad, seleccionBarriles, tipoEvento, cantidadPersonas, conHielo, equipo],
   );
 
   const handleInputChange = (e) => {
@@ -58,31 +65,82 @@ function App() {
     setDatos((prev) => ({ ...prev, [name]: value }));
   };
 
-  const finalizarPedido = () => {
-    if (modalidad === 'eventos' && cantidadPersonas < 50) {
+  const iniciarPago = async (tipo) => {
+    try {
+      const title = `Reserva ${modalidad === 'barriles' ? 'Barriles' : 'Eventos'} - ${datos.nombre || 'Cliente'}`;
+      const response = await fetch(`${MP_BACKEND_URL}/api/mercadopago/preference`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          unit_price: Number(precioTotal),
+          quantity: 1,
+          payer: {
+            name: datos.nombre || undefined,
+            phone: datos.telefono ? { number: datos.telefono } : undefined,
+          },
+          metadata: { metodo_pago: tipo },
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        const detalle = data?.details?.message || data?.details?.cause || 'No se pudo crear el pago.';
+        throw new Error(typeof detalle === 'string' ? detalle : 'No se pudo crear el pago.');
+      }
+      const url = data.init_point || data.sandbox_init_point;
+      if (url) {
+        window.open(url, '_blank');
+        return;
+      }
+      throw new Error('Link de pago no disponible.');
+    } catch (err) {
       Swal.fire({
         icon: 'error',
-        title: 'Mínimo de personas',
-        text: 'El servicio requiere 50 personas.',
-        confirmButtonColor: '#d4a017',
+        title: 'Pago no disponible',
+        text: err?.message || 'No se pudo abrir el link de pago. Intenta nuevamente.',
         background: '#111',
         color: '#fff',
       });
-      return;
     }
+  };
 
-    if (!datos.nombre || !datos.direccion || !fechaSeleccionada || !datos.dni || !datos.telefono) {
+  const crearEventoCalendario = async () => {
+    if (!fechaSeleccionada) return;
+    const inicio = fechaSeleccionada;
+    const fin = new Date(fechaSeleccionada.getTime() + 2 * 60 * 60 * 1000);
+    const resumen = `Reserva ${modalidad === 'barriles' ? 'Barriles' : 'Eventos'} - ${datos.nombre || 'Cliente'}`;
+    const detalle = `Nombre: ${datos.nombre}\nTelefono: ${datos.telefono}\nDireccion: ${datos.direccion}\nModalidad: ${modalidad}\nMetodo envio: ${metodoEnvio}\nMetodo pago: ${metodoPago}`;
+
+    try {
+      const response = await fetch(`${MP_BACKEND_URL}/api/google/calendar/event`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          summary: resumen,
+          description: detalle,
+          location: datos.direccion,
+          start: inicio.toISOString(),
+          end: fin.toISOString(),
+          timeZone: 'America/Argentina/Buenos_Aires',
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('No se pudo crear el evento en Google Calendar.');
+      }
+    } catch (_err) {
       Swal.fire({
         icon: 'warning',
-        title: '¡Faltan datos!',
-        text: 'Completá la información para la entrega.',
-        confirmButtonColor: '#d4a017',
+        title: 'Calendario no conectado',
+        text: 'No se pudo crear el evento. Conecta Google Calendar desde el footer.',
         background: '#111',
         color: '#fff',
       });
-      return;
     }
+  };
 
+  // --- EFECTO VISUAL DE CONFETI ---
+  const lanzarConfeti = () => {
     const duration = 3000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
@@ -95,14 +153,51 @@ function App() {
       confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
       confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
     }, 250);
+  };
+
+  const finalizarPedido = () => {
+    // Validaciones de negocio
+    if (modalidad === 'barriles' && !seleccionBarriles.cerveza.activo && !seleccionBarriles.gin.activo) {
+      Swal.fire({ icon: 'error', title: 'Pedido vacío', text: 'Seleccioná al menos un producto.', background: '#111', color: '#fff' });
+      return;
+    }
+
+    if (modalidad === 'eventos' && cantidadPersonas < 50) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Mínimo de personas',
+        text: 'El servicio de Carro + Barra requiere al menos 50 personas.',
+        confirmButtonColor: '#d4a017',
+        background: '#111',
+        color: '#fff',
+      });
+      return;
+    }
+
+    if (!datos.nombre || !datos.direccion || !fechaSeleccionada || !datos.dni || !datos.telefono) {
+      Swal.fire({
+        icon: 'warning',
+        title: '¡Faltan datos!',
+        text: 'Completá la información de contacto y entrega.',
+        confirmButtonColor: '#d4a017',
+        background: '#111',
+        color: '#fff',
+      });
+      return;
+    }
+
+    // Si todo está bien, lanzamos la celebración
+    lanzarConfeti();
 
     const senaCalculada = precioTotal * 0.3;
 
+    // Construcción del mensaje para WhatsApp y Calendario
     const textoMensaje = buildOrderMessage({
       modalidad,
-      tipoProducto,
-      litros,
+      seleccionBarriles,
       equipo,
+      metodoEnvio,
+      metodoPago,
       tipoEvento,
       cantidadPersonas,
       productos,
@@ -113,30 +208,20 @@ function App() {
     });
 
     Swal.fire({
-      title: '¡Todo listo! 🍻',
-      html: `Total: <b>$${precioTotal.toLocaleString('es-AR')}</b>.<br>Seña (30%): <b style="color:#d4a017;">$${senaCalculada.toLocaleString(
-        'es-AR',
-      )}</b><br>Alias: <b>${ALIAS_MP}</b>`,
+      title: '¡Reserva confirmada! 🍻',
+      html: `Total: <b>$${precioTotal.toLocaleString('es-AR')}</b>.<br>Seña para reservar (30%): <b style="color:#d4a017;">$${senaCalculada.toLocaleString('es-AR')}</b><br>Alias Mercado Pago: <b>${ALIAS_MP}</b>`,
       showCancelButton: true,
-      confirmButtonText: 'ENVIAR WHATSAPP 🍺',
+      confirmButtonText: 'ENVIAR A WHATSAPP 🍺',
+      cancelButtonText: 'CANCELAR',
       confirmButtonColor: '#d4a017',
       background: '#111',
       color: '#fff',
     }).then((result) => {
       if (result.isConfirmed) {
+        crearEventoCalendario();
         window.open(`https://wa.me/${NUMERO_DUENIO}?text=${encodeURIComponent(textoMensaje)}`, '_blank');
       }
     });
-  };
-
-  const handleModalidadChange = (value) => {
-    setModalidad(value);
-    reiniciarSlider();
-  };
-
-  const handleEquipoChange = (value) => {
-    setEquipo(value);
-    reiniciarSlider();
   };
 
   return (
@@ -144,21 +229,26 @@ function App() {
       <Header />
 
       <div className="content-grid-stable">
-        <ImageSlider imagenesActuales={imagenesActuales} indexImagen={indexImagen} onInteraction={handleUserInteraction} />
+        <ImageSlider 
+          imagenesActuales={imagenesActuales} 
+          indexImagen={indexImagen} 
+          onInteraction={handleUserInteraction} 
+          isPaused={isPaused} 
+        />
 
         <main className="form-area">
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="form-card-premium">
             <ServiceSelector
               modalidad={modalidad}
-              setModalidad={handleModalidadChange}
-              tipoProducto={tipoProducto}
-              setTipoProducto={setTipoProducto}
-              litros={litros}
-              setLitros={setLitros}
+              setModalidad={(v) => { setModalidad(v); reiniciarSlider(); }}
+              seleccionBarriles={seleccionBarriles}
+              setSeleccionBarriles={setSeleccionBarriles}
               conHielo={conHielo}
               setConHielo={setConHielo}
               equipo={equipo}
-              setEquipo={handleEquipoChange}
+              setEquipo={(v) => { setEquipo(v); reiniciarSlider(); }}
+              metodoEnvio={metodoEnvio}
+              setMetodoEnvio={setMetodoEnvio}
               tipoEvento={tipoEvento}
               setTipoEvento={setTipoEvento}
               cantidadPersonas={cantidadPersonas}
@@ -171,13 +261,21 @@ function App() {
               onInputChange={handleInputChange}
               fechaSeleccionada={fechaSeleccionada}
               setFechaSeleccionada={setFechaSeleccionada}
+              metodoPago={metodoPago}
+              setMetodoPago={setMetodoPago}
+              onPagarAhora={iniciarPago}
             />
 
             <ReservationInfo modalidad={modalidad} />
-            <PriceSummary precioTotal={precioTotal} onConfirm={finalizarPedido} />
+            <PriceSummary
+              precioTotal={precioTotal}
+              onConfirm={finalizarPedido}
+            />
           </motion.div>
         </main>
       </div>
+
+      <Footer />
     </div>
   );
 }

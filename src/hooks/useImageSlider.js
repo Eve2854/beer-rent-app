@@ -17,19 +17,16 @@ export const useImageSlider = ({ modalidad, equipo, imagenesChopera, imagenesBar
 
   const startInterval = useCallback(() => {
     stopInterval();
-    intervalRef.current = setInterval(() => {
-      setIndexImagen((prev) => (prev + 1) % imagenesActuales.length);
-    }, 3000);
-  }, [imagenesActuales.length, stopInterval]);
+    if (!isPaused) { // Solo inicia si NO está pausado
+      intervalRef.current = setInterval(() => {
+        setIndexImagen((prev) => (prev + 1) % imagenesActuales.length);
+      }, 3000);
+    }
+  }, [imagenesActuales.length, stopInterval, isPaused]);
 
   useEffect(() => {
-    if (!isPaused) startInterval();
-    else stopInterval();
-
-    return () => {
-      stopInterval();
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    startInterval();
+    return () => stopInterval();
   }, [isPaused, startInterval, stopInterval]);
 
   const reiniciarSlider = useCallback(() => {
@@ -38,10 +35,13 @@ export const useImageSlider = ({ modalidad, equipo, imagenesChopera, imagenesBar
   }, []);
 
   const handleUserInteraction = useCallback((manualIndex = null) => {
-    setIsPaused(true);
+    setIsPaused(true); // Esto debería disparar el useEffect y frenar el startInterval
     if (manualIndex !== null) setIndexImagen(manualIndex);
+    
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setIsPaused(false), 10000);
+    timeoutRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, 10000);
   }, []);
 
   return {

@@ -1,8 +1,9 @@
 export const buildOrderMessage = ({
   modalidad,
-  tipoProducto,
-  litros,
+  seleccionBarriles,
   equipo,
+  metodoEnvio,
+  metodoPago,
   tipoEvento,
   cantidadPersonas,
   productos,
@@ -11,6 +12,7 @@ export const buildOrderMessage = ({
   senaCalculada,
   fechaSeleccionada,
 }) => {
+  // 1. Formatear Fecha para el texto
   const fechaTexto = fechaSeleccionada.toLocaleString('es-AR', {
     day: '2-digit',
     month: '2-digit',
@@ -19,16 +21,44 @@ export const buildOrderMessage = ({
     minute: '2-digit',
   });
 
-  const detallePedido =
-    modalidad === 'barriles'
-      ? `*Producto:* ${tipoProducto.toUpperCase()} (${litros}L)\n*Equipo:* ${equipo}`
-      : `*Servicio:* ${productos.serviciosEvento.find((s) => s.id === tipoEvento)?.nombre}\n*Personas:* ${cantidadPersonas}`;
+  const textoEnvio = metodoEnvio === 'domicilio'
+    ? 'A domicilio (Costo varía según zona)'
+    : 'Retira cliente / A coordinar';
 
-  return `*NUEVA RESERVA BEER RENT* 🍻\n\n*Cliente:* ${datos.nombre}\n${detallePedido}\n--------------------------\n*TOTAL:* $${precioTotal.toLocaleString(
+  // 2. Construir detalle de productos
+  let detallePedido = '';
+  let tituloEvento = 'Reserva: ';
+
+  if (modalidad === 'barriles') {
+    detallePedido = '*Productos:* \n';
+    if (seleccionBarriles.cerveza.activo) {
+      detallePedido += `- CERVEZA (${seleccionBarriles.cerveza.litros}L)\n`;
+      tituloEvento += `Cerveza ${seleccionBarriles.cerveza.litros}L `;
+    }
+    if (seleccionBarriles.gin.activo) {
+      detallePedido += `- GIN TIRADO (${seleccionBarriles.gin.litros}L)\n`;
+      tituloEvento += `Gin ${seleccionBarriles.gin.litros}L `;
+    }
+    detallePedido += `*Equipo:* ${equipo}\n*Envio:* ${textoEnvio}\n*Metodo de pago:* ${metodoPago}`;
+  } else {
+    const nombreServicio = productos.serviciosEvento.find((s) => s.id === tipoEvento)?.nombre;
+    detallePedido = `*Servicio:* ${nombreServicio}\n*Personas:* ${cantidadPersonas}\n*Metodo de pago:* ${metodoPago}`;
+    tituloEvento += `${nombreServicio} (${cantidadPersonas} pers)`;
+  }
+
+  // 3. Crear Link de Google Calendar
+  // Formato de fecha para Google: YYYYMMDDTHHMMSSZ (Usamos 2 horas de duracion por defecto)
+  const formatGCalDate = (date) => date.toISOString().replace(/-|:|\.\d\d\d/g, '');
+  const fechaFin = new Date(fechaSeleccionada.getTime() + 2 * 60 * 60 * 1000); // +2 horas
+
+  const gCalUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(tituloEvento + ' - ' + datos.nombre)}&dates=${formatGCalDate(fechaSeleccionada)}/${formatGCalDate(fechaFin)}&details=${encodeURIComponent(detallePedido.replace(/\*/g, '') + '\n\nTel: ' + datos.telefono)}&location=${encodeURIComponent(datos.direccion)}&sf=true&output=xml`;
+
+  // 4. Retornar el mensaje final para WhatsApp
+  return `*NUEVA RESERVA BEER RENT* \n\n*Cliente:* ${datos.nombre}\n${detallePedido}\n--------------------------\n*TOTAL:* $${precioTotal.toLocaleString(
     'es-AR',
   )}\n*SEÑA (30%):* $${senaCalculada.toLocaleString(
     'es-AR',
-  )}\n--------------------------\n*Fecha:* ${fechaTexto}\n*Dirección:* ${datos.direccion}\n*Tel:* ${datos.telefono}\n*Comentarios:* ${
+  )}\n--------------------------\n*Fecha:* ${fechaTexto}\n*Direccion:* ${datos.direccion}\n*Tel:* ${datos.telefono}\n*Comentarios:* ${
     datos.comentarios || 'Sin comentarios'
-  }`;
+  }\n\n*AGENDAR EN CALENDARIO:* \n${gCalUrl}`;
 };

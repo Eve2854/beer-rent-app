@@ -1,0 +1,14 @@
+[33me3a8dc8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Guardo cambios de slider y footer
+package-lock.json
+package.json
+src/App.jsx
+src/components/DeliveryForm.jsx
+src/components/Header.jsx
+src/components/ImageSlider.jsx
+src/components/PriceSummary.jsx
+src/components/ReservationInfo.jsx
+src/components/ServiceSelector.jsx
+src/constants/appConstants.js
+src/hooks/useImageSlider.js
+src/utils/orderMessage.js
+src/utils/pricing.js

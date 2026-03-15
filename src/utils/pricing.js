@@ -1,25 +1,43 @@
 export const calcularPrecioTotal = ({
   productos,
   modalidad,
-  tipoProducto,
+  seleccionBarriles,
   tipoEvento,
   cantidadPersonas,
-  litros,
   conHielo,
   equipo,
 }) => {
   if (modalidad === 'barriles') {
-    const listaSeleccionada = productos[tipoProducto] || [];
-    const item = listaSeleccionada.find((b) => b.litros === Number(litros));
-    let total = item ? item.precio : 0;
-    if (conHielo) total += 12000;
+    let total = 0;
+    let costoHieloTotal = 0;
+
+    if (seleccionBarriles.cerveza.activo) {
+      const item = productos.cerveza.find(b => b.litros === seleccionBarriles.cerveza.litros);
+      total += item ? item.precio : 0;
+      if (conHielo) {
+        costoHieloTotal += seleccionBarriles.cerveza.litros === 10 ? 8000 : 16000;
+      }
+    }
+
+    if (seleccionBarriles.gin.activo) {
+      const item = productos.gin.find(b => b.litros === seleccionBarriles.gin.litros);
+      total += item ? item.precio : 0;
+      if (conHielo) {
+        costoHieloTotal += seleccionBarriles.gin.litros === 10 ? 8000 : 16000;
+      }
+    }
+
+    total += costoHieloTotal;
     if (equipo === 'barra') total += 10000;
+
     return total;
   }
 
-  if (cantidadPersonas >= 50) {
-    const servicio = productos.serviciosEvento.find((s) => s.id === tipoEvento);
-    return servicio ? servicio.precioPersona * cantidadPersonas : 0;
+  // Lógica para EVENTOS (CARRO + BARRA)
+  // Quitamos la restricción del >= 50 aquí para que el precio se vea mientras escribe
+  const servicio = productos.serviciosEvento.find((s) => s.id === tipoEvento);
+  if (servicio && cantidadPersonas > 0) {
+    return servicio.precioPersona * cantidadPersonas;
   }
 
   return 0;

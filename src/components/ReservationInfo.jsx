@@ -7,28 +7,34 @@ const ReservationInfo = ({ modalidad }) => (
         <p>
           <b>Reserva de fecha:</b>
           <br />
-          Para asegurar la fecha solicitamos una seña del <b>30% del total</b>.
+          Para asegurar la fecha solicitamos una sena del <b>30% del total</b>.
           <br />
-          La reserva queda confirmada una vez recibido el comprobante ❤️
+          La reserva queda confirmada una vez recibido el comprobante
         </p>
         <p className="cancelacion-text">
-          <i>(En caso de cancelación, la seña no es reembolsable ya que se bloquea la fecha y se organiza la producción).</i>
+          <i>(En caso de cancelacion, la sena no es reembolsable ya que se bloquea la fecha y se organiza la produccion).</i>
         </p>
-        <p>Trabajamos para cumpleaños, casamientos y todo tipo de eventos 🥳🍻</p>
+        <p className="cancelacion-text">
+          <i>Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.</i>
+        </p>
+        <p>Trabajamos para cumpleanos, casamientos y todo tipo de eventos</p>
       </div>
     ) : (
       <div className="info-content animate-fade">
         <p>
           <b>Reserva de fecha:</b>
           <br />
-          Para asegurar la fecha pedimos una seña del <b>30% del total</b>. Una semana antes del evento debe abonarse el saldo restante.
+          Para asegurar la fecha pedimos una sena del <b>30% del total</b>. Una semana antes del evento debe abonarse el saldo restante.
         </p>
         <p className="cancelacion-text">
-          <i>(En caso de cancelación, la seña no es reembolsable ya que se bloquea la fecha y se organiza la producción).</i>
+          <i>(En caso de cancelacion, la sena no es reembolsable ya que se bloquea la fecha y se organiza la produccion).</i>
+        </p>
+        <p className="cancelacion-text">
+          <i>Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.</i>
         </p>
         <p>
-          Trabajamos para cumpleaños, casamientos, eventos y todo tipo de reuniones.
-          <b> Dejamos todo listo para que ustedes solo tengan que disfrutar.</b> ✨🍻
+          Trabajamos para cumpleanos, casamientos, eventos y todo tipo de reuniones.
+          <b> Dejamos todo listo para que ustedes solo tengan que disfrutar.</b>
         </p>
       </div>
     )}
