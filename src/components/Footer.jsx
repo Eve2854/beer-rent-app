@@ -76,6 +76,11 @@ const Footer = () => {
               <p>Servicio de cerveza artesanal para eventos.</p>
             </div>
           </details>
+          <div className="terms-links">
+            <a href="/privacidad.html">Politica de privacidad</a>
+            <span>•</span>
+            <a href="/terminos.html">Terminos completos</a>
+          </div>
         </div>
 
         <hr className="footer-divider" />

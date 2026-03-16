@@ -4,7 +4,7 @@ export const NUMERO_DUENIO = '542235599863';
 export const MP_LINK_TRANSFERENCIA = 'https://link.mercadopago.com.ar/mondcervezaartesanal';
 export const MP_LINK_QR = 'https://link.mercadopago.com.ar/mondcervezaartesanal';
 export const MP_LINK_TARJETA = 'https://link.mercadopago.com.ar/mondcervezaartesanal';
-export const MP_BACKEND_URL = 'http://localhost:3001';
+export const MP_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 // El logo que está en tu carpeta public
 export const LOGO_URL = '/logo.png';
