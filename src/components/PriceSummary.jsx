@@ -43,7 +43,8 @@ const PriceSummary = ({ precioTotal, onConfirm, termsAccepted, onToggleTerms }) 
           <p><b>MonD Cerveza Artesanal</b></p>
           <p>Servicio de cerveza artesanal para eventos.</p>
         </div>
-      </details>\n<label className="terms-accept">
+      </details>
+      <label className="terms-accept">
         <input type="checkbox" checked={termsAccepted} onChange={(e) => onToggleTerms(e.target.checked)} />
         <span>He leido y acepto los Terminos y Condiciones.</span>
       </label>
@@ -56,6 +57,22 @@ const PriceSummary = ({ precioTotal, onConfirm, termsAccepted, onToggleTerms }) 
 );
 
 export default PriceSummary;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -83,7 +83,7 @@ const ServiceSelector = ({
 
             <label className="label-gold">4. Hielo y Equipo</label>
             <div className="btn-row">
-              {!seleccionBarriles.gin.activo && (
+              {seleccionBarriles.cerveza.activo && (
                 <select value={String(conHielo)} onChange={(e) => setConHielo(e.target.value === 'true')} className="input-custom-half">
                   <option value="false">Sin Hielo</option>
                   <option value="true">Con Hielo (+${obtenerPrecioHieloActual().toLocaleString('es-AR')})</option>
@@ -91,6 +91,18 @@ const ServiceSelector = ({
               )}
               {seleccionBarriles.gin.activo && (
                 <div className="input-custom-half notice-box">Gin va sin hielo.</div>
+              )}
+              {!seleccionBarriles.cerveza.activo && !seleccionBarriles.gin.activo && (
+                <select value={String(conHielo)} onChange={(e) => setConHielo(e.target.value === 'true')} className="input-custom-half">
+                  <option value="false">Sin Hielo</option>
+                  <option value="true">Con Hielo (+${obtenerPrecioHieloActual().toLocaleString('es-AR')})</option>
+                </select>
+              )}
+              <select value={equipo} onChange={(e) => setEquipo(e.target.value)} className="input-custom-half">
+                <option value="chopera">Chopera (Bonificada)</option>
+                <option value="barra">Barra Móvil (+$10.000)</option>
+              </select>
+            </div>
               )}
               <select value={equipo} onChange={(e) => setEquipo(e.target.value)} className="input-custom-half">
                 <option value="chopera">Chopera (Bonificada)</option>
@@ -139,4 +151,5 @@ const ServiceSelector = ({
 };
 
 export default ServiceSelector;
+
 
