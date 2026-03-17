@@ -1,4 +1,3 @@
-import React from 'react';
 import React, { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Beer, Info, ShoppingCart, Users, Truck, Check } from 'lucide-react';
