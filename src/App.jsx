@@ -110,7 +110,7 @@ function App() {
     const inicio = fechaSeleccionada;
     const fin = new Date(fechaSeleccionada.getTime() + 2 * 60 * 60 * 1000);
     const resumen = `Reserva ${modalidad === 'barriles' ? 'Barriles' : 'Eventos'} - ${datos.nombre || 'Cliente'}`;
-    const detalle = `Nombre: ${datos.nombre}\nTelefono: ${datos.telefono}\nDireccion: ${datos.direccion}\nModalidad: ${modalidad}\nMetodo envio: ${metodoEnvio}\nMetodo pago: ${metodoPago}`;
+    const detalle = `Nombre: ${datos.nombre}\nTelefono: ${datos.telefono}\nDireccion: ${datos.direccion}\nModalidad: ${modalidad}\nMetodo envio: ${metodoEnvio}\nMetodo pago: ${metodoPago}\nTotal: $${precioTotal.toLocaleString('es-AR')}\nSeña (30%): $${(precioTotal * 0.3).toLocaleString('es-AR')}`;
 
     try {
       const response = await fetch(`${MP_BACKEND_URL}/api/google/calendar/event`, {
