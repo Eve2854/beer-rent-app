@@ -714,6 +714,22 @@ body {
     height: 38px !important;
     font-size: 0.9rem !important;
   }
+  .form-card-premium .btn-row {
+    align-items: stretch !important;
+  }
+  .form-card-premium .btn-row .input-custom,
+  .form-card-premium .btn-row .input-custom-half,
+  .form-card-premium .btn-row select.input-custom,
+  .form-card-premium .btn-row select.input-custom-half {
+    padding: 6px 10px !important;
+    min-height: 36px !important;
+    height: 36px !important;
+    line-height: 1.1 !important;
+  }
+  .form-card-premium .btn-row select.input-custom,
+  .form-card-premium .btn-row select.input-custom-half {
+    appearance: none;
+  }
   .form-card-premium select.input-custom,
   .form-card-premium select.input-custom-half {
     height: 38px !important;
