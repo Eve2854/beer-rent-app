@@ -33,11 +33,11 @@ const Footer = () => {
               <MessageCircle size={24} /> <span>WhatsApp</span>
             </a>
           </div>
-          <div className="footer-copy">(c) MOND Cerveza Artesanal 2026</div>
+          <div className="footer-copy">&copy; MOND Cerveza Artesanal 2026</div>
           <div className="terms-links">
-            <a href="/privacidad.html">Política de privacidad</a>
-            <span>•</span>
-            <a href="/terminos.html">Términos completos</a>
+            <a href="/privacidad.html">Politica de privacidad</a>
+            <span>|</span>
+            <a href="/terminos.html">Terminos completos</a>
           </div>
         </div>
         <hr className="footer-divider" />
@@ -58,4 +58,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
 

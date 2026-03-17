@@ -7,16 +7,15 @@ const ReservationInfo = ({ modalidad }) => (
         <p>
           <b>Reserva de fecha:</b>
           <br />
-          Para asegurar la fecha solicitamos una seña del <b>30% del total</b>.
+          Para asegurar la fecha solicitamos una se&ntilde;a del <b>30% del total</b>.
           <br />
-          La reserva queda confirmada una vez recibido el comprobante
         </p>
         <p className="cancelacion-text">
-          <i>(En caso de cancelación, la seña no es reembolsable ya que se bloquea la fecha y se organiza la producción).</i>
+          <i>(En caso de cancelacion, la se&ntilde;a no es reembolsable ya que se bloquea la fecha y se organiza la produccion).</i>
         </p>
-        <p>Trabajamos para cumpleaños, casamientos y todo tipo de eventos.</p>
+        <p>Trabajamos para cumplea&ntilde;os, casamientos y todo tipo de eventos.</p>
         <div className="proof-alert">
-          Si pagas por transferencia, QR o Mercado Pago, enviá el comprobante para confirmar la reserva.
+          Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.
         </div>
       </div>
     ) : (
@@ -24,17 +23,17 @@ const ReservationInfo = ({ modalidad }) => (
         <p>
           <b>Reserva de fecha:</b>
           <br />
-          Para asegurar la fecha pedimos una seña del <b>30% del total</b>. Una semana antes del evento debe abonarse el saldo restante.
+          Para asegurar la fecha pedimos una se&ntilde;a del <b>30% del total</b>. Una semana antes del evento debe abonarse el saldo restante.
         </p>
         <p className="cancelacion-text">
-          <i>(En caso de cancelación, la seña no es reembolsable ya que se bloquea la fecha y se organiza la producción).</i>
+          <i>(En caso de cancelacion, la se&ntilde;a no es reembolsable ya que se bloquea la fecha y se organiza la produccion).</i>
         </p>
         <p>
-          Trabajamos para cumpleaños, casamientos, eventos y todo tipo de reuniones.
+          Trabajamos para cumplea&ntilde;os, casamientos, eventos y todo tipo de reuniones.
           <b> Dejamos todo listo para que ustedes solo tengan que disfrutar.</b>
         </p>
         <div className="proof-alert">
-          Si pagas por transferencia, QR o Mercado Pago, enviá el comprobante para confirmar la reserva.
+          Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.
         </div>
       </div>
     )}
@@ -42,3 +41,6 @@ const ReservationInfo = ({ modalidad }) => (
 );
 
 export default ReservationInfo;
+
+
+
