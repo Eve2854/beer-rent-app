@@ -1,4 +1,5 @@
 import React from 'react';
+import React, { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Beer, Info, ShoppingCart, Users, Truck, Check } from 'lucide-react';
 
@@ -27,11 +28,14 @@ const ServiceSelector = ({
     if (seleccionBarriles.cerveza.activo) {
       costoHielo += seleccionBarriles.cerveza.litros === 10 ? 8000 : 16000;
     }
-    if (seleccionBarriles.gin.activo) {
-      costoHielo += seleccionBarriles.gin.litros === 10 ? 8000 : 16000;
-    }
     return costoHielo;
   };
+
+  useEffect(() => {
+    if (seleccionBarriles.gin.activo && conHielo) {
+      setConHielo(false);
+    }
+  }, [seleccionBarriles.gin.activo, conHielo, setConHielo]);
 
   return (
     <>
@@ -80,10 +84,15 @@ const ServiceSelector = ({
 
             <label className="label-gold">4. Hielo y Equipo</label>
             <div className="btn-row">
-              <select value={String(conHielo)} onChange={(e) => setConHielo(e.target.value === 'true')} className="input-custom-half">
-                <option value="false">Sin Hielo</option>
-                <option value="true">Con Hielo (+${obtenerPrecioHieloActual().toLocaleString('es-AR')})</option>
-              </select>
+              {!seleccionBarriles.gin.activo && (
+                <select value={String(conHielo)} onChange={(e) => setConHielo(e.target.value === 'true')} className="input-custom-half">
+                  <option value="false">Sin Hielo</option>
+                  <option value="true">Con Hielo (+${obtenerPrecioHieloActual().toLocaleString('es-AR')})</option>
+                </select>
+              )}
+              {seleccionBarriles.gin.activo && (
+                <div className="input-custom-half notice-box">Gin va sin hielo.</div>
+              )}
               <select value={equipo} onChange={(e) => setEquipo(e.target.value)} className="input-custom-half">
                 <option value="chopera">Chopera (Bonificada)</option>
                 <option value="barra">Barra Móvil (+$10.000)</option>
@@ -131,3 +140,4 @@ const ServiceSelector = ({
 };
 
 export default ServiceSelector;
+

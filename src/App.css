@@ -389,6 +389,90 @@ body {
 }
 .cancelacion-text { color: #bbb; font-size: 0.9rem; margin-top: 10px; }
 
+.proof-alert {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(212, 160, 23, 0.9);
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.18), rgba(0,0,0,0.2));
+  color: #f7e7b1;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+.notice-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px dashed rgba(212, 160, 23, 0.8);
+  color: var(--gold);
+  font-weight: 600;
+  background: rgba(212, 160, 23, 0.08);
+  border-radius: 12px;
+  padding: 0 12px;
+}
+
+.terms-block {
+  margin: 18px 0 12px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.terms-accordion summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  list-style: none;
+}
+
+.terms-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.terms-body {
+  margin-top: 12px;
+  color: #ddd;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.terms-links {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.terms-links a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.terms-accept {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #f3f0e4;
+  font-weight: 600;
+}
+
+.terms-accept input {
+  margin-top: 3px;
+  accent-color: var(--gold);
+}
+
+.btn-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(30%);
+}
+
 /* --- RESUMEN Y BOTÓN FINAL --- */
 .summary-card { 
   margin-top: 60px; padding: 45px; border: 2px solid var(--gold); 

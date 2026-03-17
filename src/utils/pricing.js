@@ -22,9 +22,6 @@ export const calcularPrecioTotal = ({
     if (seleccionBarriles.gin.activo) {
       const item = productos.gin.find(b => b.litros === seleccionBarriles.gin.litros);
       total += item ? item.precio : 0;
-      if (conHielo) {
-        costoHieloTotal += seleccionBarriles.gin.litros === 10 ? 8000 : 16000;
-      }
     }
 
     total += costoHieloTotal;

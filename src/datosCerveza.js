@@ -1,9 +1,9 @@
 export const productos = {
   cerveza: [
-    { id: 1, litros: 10, precio: 30000 },
-    { id: 2, litros: 20, precio: 60000 },
-    { id: 3, litros: 30, precio: 90000 },
-    { id: 4, litros: 50, precio: 150000 },
+    { id: 1, litros: 10, precio: 33000 },
+    { id: 2, litros: 20, precio: 66000 },
+    { id: 3, litros: 30, precio: 99000 },
+    { id: 4, litros: 50, precio: 165000 },
   ],
   gin: [
     { id: 5, litros: 10, precio: 39000 },

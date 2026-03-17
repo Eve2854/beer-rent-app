@@ -14,9 +14,9 @@ const ReservationInfo = ({ modalidad }) => (
         <p className="cancelacion-text">
           <i>(En caso de cancelacion, la sena no es reembolsable ya que se bloquea la fecha y se organiza la produccion).</i>
         </p>
-        <p className="cancelacion-text">
-          <i>Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.</i>
-        </p>
+        <div className="proof-alert">
+          Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.
+        </div>
         <p>Trabajamos para cumpleanos, casamientos y todo tipo de eventos</p>
       </div>
     ) : (
@@ -29,9 +29,9 @@ const ReservationInfo = ({ modalidad }) => (
         <p className="cancelacion-text">
           <i>(En caso de cancelacion, la sena no es reembolsable ya que se bloquea la fecha y se organiza la produccion).</i>
         </p>
-        <p className="cancelacion-text">
-          <i>Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.</i>
-        </p>
+        <div className="proof-alert">
+          Si pagas por transferencia, QR o Mercado Pago, envia el comprobante para confirmar la reserva.
+        </div>
         <p>
           Trabajamos para cumpleanos, casamientos, eventos y todo tipo de reuniones.
           <b> Dejamos todo listo para que ustedes solo tengan que disfrutar.</b>

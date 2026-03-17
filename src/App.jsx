@@ -36,6 +36,7 @@ function App() {
   const [metodoPago, setMetodoPago] = useState('efectivo');
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [datos, setDatos] = useState({ nombre: '', dni: '', telefono: '', direccion: '', comentarios: '' });
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const { imagenesActuales, indexImagen, handleUserInteraction, reiniciarSlider, isPaused } = useImageSlider({
     modalidad,
@@ -270,6 +271,8 @@ function App() {
             <PriceSummary
               precioTotal={precioTotal}
               onConfirm={finalizarPedido}
+              termsAccepted={termsAccepted}
+              onToggleTerms={setTermsAccepted}
             />
           </motion.div>
         </main>

@@ -50,7 +50,7 @@ const DeliveryForm = ({
         minDate={new Date()}
         shouldCloseOnSelect={false}
       />
-      <p className="date-helper">Reserva con al menos 48hs de anticipacion.</p>
+      <p className="date-helper">Reserva con al menos 72hs de anticipacion.</p>
     </div>
 
     <label className="label-gold">Metodo de Pago</label>
