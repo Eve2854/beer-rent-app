@@ -110,6 +110,13 @@ app.post('/api/google/calendar/event', async (req, res) => {
       location,
       start: { dateTime: start, timeZone: timeZone || 'America/Argentina/Buenos_Aires' },
       end: { dateTime: end, timeZone: timeZone || 'America/Argentina/Buenos_Aires' },
+      reminders: {
+        useDefault: false,
+        overrides: [
+          { method: 'popup', minutes: 10080 },
+          { method: 'email', minutes: 10080 },
+        ],
+      },
     };
 
     const result = await calendar.events.insert({

@@ -46,19 +46,12 @@ export const buildOrderMessage = ({
     tituloEvento += `${nombreServicio} (${cantidadPersonas} pers)`;
   }
 
-  // 3. Crear Link de Google Calendar
-  // Formato de fecha para Google: YYYYMMDDTHHMMSSZ (Usamos 2 horas de duracion por defecto)
-  const formatGCalDate = (date) => date.toISOString().replace(/-|:|\.\d\d\d/g, '');
-  const fechaFin = new Date(fechaSeleccionada.getTime() + 2 * 60 * 60 * 1000); // +2 horas
-
-  const gCalUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(tituloEvento + ' - ' + datos.nombre)}&dates=${formatGCalDate(fechaSeleccionada)}/${formatGCalDate(fechaFin)}&details=${encodeURIComponent(detallePedido.replace(/\*/g, '') + '\n\nTel: ' + datos.telefono)}&location=${encodeURIComponent(datos.direccion)}&sf=true&output=xml`;
-
-  // 4. Retornar el mensaje final para WhatsApp
+  // 3. Retornar el mensaje final para WhatsApp
   return `*NUEVA RESERVA BEER RENT* \n\n*Cliente:* ${datos.nombre}\n${detallePedido}\n--------------------------\n*TOTAL:* $${precioTotal.toLocaleString(
     'es-AR',
   )}\n*SEÑA (30%):* $${senaCalculada.toLocaleString(
     'es-AR',
   )}\n--------------------------\n*Fecha:* ${fechaTexto}\n*Direccion:* ${datos.direccion}\n*Tel:* ${datos.telefono}\n*Comentarios:* ${
     datos.comentarios || 'Sin comentarios'
-  }\n\n*AGENDAR EN CALENDARIO:* \n${gCalUrl}`;
+  }`;
 };
