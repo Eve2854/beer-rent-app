@@ -714,6 +714,23 @@ body {
     height: 38px !important;
     font-size: 0.9rem !important;
   }
+  .form-card-premium .btn-row > .input-custom-half,
+  .form-card-premium .btn-row > select.input-custom-half,
+  .form-card-premium .btn-row > .notice-box {
+    min-height: 38px !important;
+    height: 38px !important;
+    max-height: 38px !important;
+    padding: 6px 10px !important;
+    line-height: 1.1 !important;
+  }
+  .form-card-premium input[name="dni"],
+  .form-card-premium input[name="telefono"] {
+    min-height: 38px !important;
+    height: 38px !important;
+    max-height: 38px !important;
+    padding: 6px 10px !important;
+    line-height: 1.1 !important;
+  }
   .form-card-premium .btn-row {
     align-items: stretch !important;
   }
