@@ -692,3 +692,33 @@ body {
   .sidebar-static { position: sticky; top: 70px; }
   .photo-sticky-box { position: sticky; top: 70px; }
 }
+
+/* Mobile hard overrides to avoid oversized controls */
+@media (max-width: 900px) {
+  .form-card-premium .btn-opt {
+    padding: 8px 10px !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    font-size: 0.85rem !important;
+  }
+  .form-card-premium .card-selection {
+    padding: 8px 10px !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    align-items: center !important;
+  }
+  .form-card-premium .input-custom,
+  .form-card-premium .input-custom-half {
+    padding: 8px 10px !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    font-size: 0.9rem !important;
+  }
+  .form-card-premium select.input-custom,
+  .form-card-premium select.input-custom-half {
+    height: 38px !important;
+  }
+  .btn-row { gap: 8px !important; }
+  .btn-opt { flex: 1 1 auto !important; min-width: 0 !important; }
+  .selection-multi-container { flex-direction: column !important; }
+}
