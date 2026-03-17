@@ -31,14 +31,14 @@ const ServiceSelector = ({
   };
 
   useEffect(() => {
-    if (seleccionBarriles.gin.activo && conHielo) {
+    if (!seleccionBarriles.cerveza.activo && conHielo) {
       setConHielo(false);
     }
-  }, [seleccionBarriles.gin.activo, conHielo, setConHielo]);
+  }, [seleccionBarriles.cerveza.activo, conHielo, setConHielo]);
 
   return (
     <>
-      <label className="label-gold"><ShoppingCart size={18} /> 1. Seleccioná el Servicio</label>
+      <label className="label-gold"><ShoppingCart size={18} /> 1. Selecciona el Servicio</label>
       <div className="btn-row">
         <button className={`btn-opt ${modalidad === 'barriles' ? 'active' : ''}`} onClick={() => setModalidad('barriles')}>ALQUILER BARRIL</button>
         <button className={`btn-opt ${modalidad === 'eventos' ? 'active' : ''}`} onClick={() => setModalidad('eventos')}>CARRO + BARRA</button>
@@ -47,7 +47,7 @@ const ServiceSelector = ({
       <AnimatePresence mode="wait">
         {modalidad === 'barriles' ? (
           <motion.div key="barriles" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <label className="label-gold"><Beer size={18} /> 2. ¿Qué vas a tomar?</label>
+            <label className="label-gold"><Beer size={18} /> 2. Que vas a tomar?</label>
             <div className="selection-multi-container">
               <div className={`card-selection ${seleccionBarriles.cerveza.activo ? 'active' : ''}`} onClick={() => toggleProducto('cerveza')}>
                 <div className="check-circle">{seleccionBarriles.cerveza.activo && <Check size={14}/>}</div>
@@ -64,7 +64,7 @@ const ServiceSelector = ({
                 <label className="label-gold"><Info size={18} /> Litros de Cerveza</label>
                 <select value={seleccionBarriles.cerveza.litros} onChange={(e) => updateLitros('cerveza', e.target.value)} className="input-custom">
                   {productos.cerveza.map(b => (
-                    <option key={b.id} value={b.litros}>Barril {b.litros}L — ${b.precio.toLocaleString('es-AR')}</option>
+                    <option key={b.id} value={b.litros}>Barril {b.litros}L � ${b.precio.toLocaleString('es-AR')}</option>
                   ))}
                 </select>
               </div>
@@ -75,7 +75,7 @@ const ServiceSelector = ({
                 <label className="label-gold"><Info size={18} /> Litros de Gin</label>
                 <select value={seleccionBarriles.gin.litros} onChange={(e) => updateLitros('gin', e.target.value)} className="input-custom">
                   {productos.gin.map(b => (
-                    <option key={b.id} value={b.litros}>Barril {b.litros}L — ${b.precio.toLocaleString('es-AR')}</option>
+                    <option key={b.id} value={b.litros}>Barril {b.litros}L � ${b.precio.toLocaleString('es-AR')}</option>
                   ))}
                 </select>
               </div>
@@ -83,37 +83,27 @@ const ServiceSelector = ({
 
             <label className="label-gold">4. Hielo y Equipo</label>
             <div className="btn-row">
-              {seleccionBarriles.cerveza.activo && (
+              {seleccionBarriles.cerveza.activo ? (
                 <select value={String(conHielo)} onChange={(e) => setConHielo(e.target.value === 'true')} className="input-custom-half">
                   <option value="false">Sin Hielo</option>
                   <option value="true">Con Hielo (+${obtenerPrecioHieloActual().toLocaleString('es-AR')})</option>
                 </select>
+              ) : (
+                <div className="input-custom-half notice-box">Hielo solo disponible con cerveza.</div>
               )}
               {seleccionBarriles.gin.activo && (
                 <div className="input-custom-half notice-box">Gin va sin hielo.</div>
               )}
-              {!seleccionBarriles.cerveza.activo && !seleccionBarriles.gin.activo && (
-                <select value={String(conHielo)} onChange={(e) => setConHielo(e.target.value === 'true')} className="input-custom-half">
-                  <option value="false">Sin Hielo</option>
-                  <option value="true">Con Hielo (+${obtenerPrecioHieloActual().toLocaleString('es-AR')})</option>
-                </select>
-              )}
               <select value={equipo} onChange={(e) => setEquipo(e.target.value)} className="input-custom-half">
                 <option value="chopera">Chopera (Bonificada)</option>
-                <option value="barra">Barra Móvil (+$10.000)</option>
-              </select>
-            </div>
-              )}
-              <select value={equipo} onChange={(e) => setEquipo(e.target.value)} className="input-custom-half">
-                <option value="chopera">Chopera (Bonificada)</option>
-                <option value="barra">Barra Móvil (+$10.000)</option>
+                <option value="barra">Barra Movil (+$10.000)</option>
               </select>
             </div>
 
             <label className="label-gold"><Truck size={18} /> 5. ENVIO Y RETIRO</label>
             <select value={metodoEnvio} onChange={(e) => setMetodoEnvio(e.target.value)} className="input-custom">
               <option value="coordinar">A coordinar / Retira cliente</option>
-              <option value="domicilio">A domicilio (Costo varía según zona)</option>
+              <option value="domicilio">A domicilio (Costo varia segun zona)</option>
             </select>
           </motion.div>
         ) : (
@@ -121,12 +111,12 @@ const ServiceSelector = ({
             <label className="label-gold"><Users size={18} /> 2. Tipo de Servicio</label>
             <select value={tipoEvento} onChange={(e) => setTipoEvento(e.target.value)} className="input-custom">
               {productos.serviciosEvento.map((s) => (
-                <option key={s.id} value={s.id}>{s.nombre} — ${s.precioPersona.toLocaleString('es-AR')} por persona</option>
+                <option key={s.id} value={s.id}>{s.nombre} � ${s.precioPersona.toLocaleString('es-AR')} por persona</option>
               ))}
             </select>
             <p className="desc-box">{productos.serviciosEvento.find((s) => s.id === tipoEvento)?.desc}</p>
             
-            <label className="label-gold">3. Cantidad de Personas (Mínimo 50)</label>
+            <label className="label-gold">3. Cantidad de Personas (Minimo 50)</label>
             <input
               type="number"
               className="input-custom"
@@ -140,7 +130,7 @@ const ServiceSelector = ({
             />
             {cantidadPersonas > 0 && cantidadPersonas < 50 && (
               <p style={{ color: '#ff4444', fontSize: '0.8rem', marginTop: '5px' }}>
-                * El servicio de eventos requiere un mínimo de 50 personas.
+                * El servicio de eventos requiere un minimo de 50 personas.
               </p>
             )}
           </motion.div>
@@ -151,5 +141,3 @@ const ServiceSelector = ({
 };
 
 export default ServiceSelector;
-
-
