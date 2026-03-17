@@ -115,6 +115,8 @@ app.post('/api/google/calendar/event', async (req, res) => {
         overrides: [
           { method: 'popup', minutes: 10080 },
           { method: 'email', minutes: 10080 },
+          { method: 'popup', minutes: 1440 },
+          { method: 'email', minutes: 1440 },
         ],
       },
     };
