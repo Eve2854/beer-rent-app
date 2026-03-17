@@ -6,7 +6,7 @@ const PriceSummary = ({ precioTotal, onConfirm, termsAccepted, onToggleTerms }) 
 
     <div className="terms-block">
       <details className="terms-accordion">
-        <summary>Terminos y Condiciones del Servicio</summary>
+        <summary>Términos y Condiciones del Servicio</summary>
         <div className="terms-body">
           <p><b>MOND Cerveza Artesanal</b></p>
           <p>Ultima actualizacion: Marzo 2026</p>
@@ -51,7 +51,7 @@ const PriceSummary = ({ precioTotal, onConfirm, termsAccepted, onToggleTerms }) 
       </div>
       <label className="terms-accept">
         <input type="checkbox" checked={termsAccepted} onChange={(e) => onToggleTerms(e.target.checked)} />
-        <span>He leido y acepto los Terminos y Condiciones.</span>
+        <span>He leído y acepto los Términos y Condiciones.</span>
       </label>
     </div>
 
@@ -62,3 +62,4 @@ const PriceSummary = ({ precioTotal, onConfirm, termsAccepted, onToggleTerms }) 
 );
 
 export default PriceSummary;
+
