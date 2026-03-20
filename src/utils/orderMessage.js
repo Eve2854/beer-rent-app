@@ -22,7 +22,7 @@ export const buildOrderMessage = ({
   });
 
   const textoEnvio = metodoEnvio === 'domicilio'
-    ? 'A domicilio (Costo varía según zona)'
+    ? 'A domicilio (Costo varia segun zona)'
     : 'Retira cliente / A coordinar';
 
   // 2. Construir detalle de productos
@@ -49,9 +49,9 @@ export const buildOrderMessage = ({
   // 3. Retornar el mensaje final para WhatsApp
   return `*NUEVA RESERVA BEER RENT* \n\n*Cliente:* ${datos.nombre}\n${detallePedido}\n--------------------------\n*TOTAL:* $${precioTotal.toLocaleString(
     'es-AR',
-  )}\n*SEÑA (30%):* $${senaCalculada.toLocaleString(
+  )}\n*SE�A (30%):* $${senaCalculada.toLocaleString(
     'es-AR',
   )}\n--------------------------\n*Fecha:* ${fechaTexto}\n*Direccion:* ${datos.direccion}\n*Tel:* ${datos.telefono}\n*Comentarios:* ${
     datos.comentarios || 'Sin comentarios'
-  }`;
+  }\n\n*EN CASO DE ABONAR MEDIANTE TRANSFERENCIA, QR O MERCADO PAGO RECUERDE ENVIAR POR ESTE MEDIO UNA CAPTURA DEL COMPROBANTE DE PAGO*`;
 };
