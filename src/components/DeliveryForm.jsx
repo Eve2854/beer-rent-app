@@ -20,13 +20,13 @@ const DeliveryForm = ({
     <div className="label-gold">
       <User size={18} /> Datos de Entrega
     </div>
-    <input id="nombre" type="text" name="nombre" placeholder="Nombre Completo" onChange={onInputChange} className="input-custom" value={datos.nombre} />
+    <input id="nombre" type="text" name="nombre" placeholder="Nombre Completo" onChange={onInputChange} className="input-custom" value={datos.nombre} aria-label="Nombre completo" />
     <div className="btn-row">
-      <input id="dni" type="text" name="dni" placeholder="DNI" onChange={onInputChange} className="input-custom-half" value={datos.dni} />
-      <input id="telefono" type="tel" name="telefono" placeholder="Telefono" onChange={onInputChange} className="input-custom-half" value={datos.telefono} />
+      <input id="dni" type="text" name="dni" placeholder="DNI" onChange={onInputChange} className="input-custom-half" value={datos.dni} aria-label="DNI" />
+      <input id="telefono" type="tel" name="telefono" placeholder="Telefono" onChange={onInputChange} className="input-custom-half" value={datos.telefono} aria-label="Telefono" />
     </div>
-    <input id="direccion" type="text" name="direccion" placeholder="Direccion del Evento" onChange={onInputChange} className="input-custom" value={datos.direccion} />
-    <input id="comentarios" type="text" name="comentarios" placeholder="Comentarios (opcional)" onChange={onInputChange} className="input-custom" value={datos.comentarios} />
+    <input id="direccion" type="text" name="direccion" placeholder="Direccion del Evento" onChange={onInputChange} className="input-custom" value={datos.direccion} aria-label="Direccion del evento" />
+    <input id="comentarios" type="text" name="comentarios" placeholder="Comentarios (opcional)" onChange={onInputChange} className="input-custom" value={datos.comentarios} aria-label="Comentarios" />
 
     <div className="label-gold">
       <Calendar size={18} /> Fecha y Hora
