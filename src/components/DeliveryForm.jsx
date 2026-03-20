@@ -17,9 +17,9 @@ const DeliveryForm = ({
   onPagarAhora,
 }) => (
   <>
-    <label className="label-gold" htmlFor="nombre">
+    <div className="label-gold">
       <User size={18} /> Datos de Entrega
-    </label>
+    </div>
     <input id="nombre" type="text" name="nombre" placeholder="Nombre Completo" onChange={onInputChange} className="input-custom" value={datos.nombre} />
     <div className="btn-row">
       <input id="dni" type="text" name="dni" placeholder="DNI" onChange={onInputChange} className="input-custom-half" value={datos.dni} />
@@ -28,12 +28,13 @@ const DeliveryForm = ({
     <input id="direccion" type="text" name="direccion" placeholder="Direccion del Evento" onChange={onInputChange} className="input-custom" value={datos.direccion} />
     <input id="comentarios" type="text" name="comentarios" placeholder="Comentarios (opcional)" onChange={onInputChange} className="input-custom" value={datos.comentarios} />
 
-    <label className="label-gold" htmlFor="fechaHora">
+    <div className="label-gold">
       <Calendar size={18} /> Fecha y Hora
-    </label>
+    </div>
     <div className="date-picker-wrap">
       <DatePicker
         id="fechaHora"
+        name="fechaHora"
         selected={fechaSeleccionada}
         onChange={(date) => setFechaSeleccionada(date)}
         showTimeSelect
@@ -54,7 +55,7 @@ const DeliveryForm = ({
       <p className="date-helper">Reserva con al menos 72hs de anticipacion.</p>
     </div>
 
-    <label className="label-gold">Metodo de Pago</label>
+    <div className="label-gold">Metodo de Pago</div>
     <div className="payment-grid">
       <div
         role="button"
