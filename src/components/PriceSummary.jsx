@@ -44,8 +44,8 @@ const PriceSummary = ({ precioTotal, onConfirm, termsAccepted, onToggleTerms }) 
           <p>Servicio de cerveza artesanal para eventos.</p>
         </div>
       </details>
-      <label className="terms-accept">
-        <input type="checkbox" checked={termsAccepted} onChange={(e) => onToggleTerms(e.target.checked)} />
+      <label className="terms-accept" htmlFor="termsAccepted">
+        <input id="termsAccepted" type="checkbox" checked={termsAccepted} onChange={(e) => onToggleTerms(e.target.checked)} />
         <span>He leido y acepto los Terminos y Condiciones.</span>
       </label>
     </div>
