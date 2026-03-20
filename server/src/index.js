@@ -14,6 +14,8 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
   'https://cervezamond.netlify.app',
   'https://beer-rent-app.vercel.app',
+  'https://cervezamond.com.ar',
+  'https://www.cervezamond.com.ar',
 ];
 
 app.use(express.json());
