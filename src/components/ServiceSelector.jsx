@@ -1,6 +1,15 @@
 import React, { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Beer, Info, ShoppingCart, Users, Truck, Check } from 'lucide-react';
+import { calcularPrecioBarrilCerveza } from '../utils/pricing';
+
+const DESCRIPCIONES_ESTILOS = {
+  golden: 'Ligera y refrescante. Perfil maltoso suave, final seco y muy tomable.',
+  honey: 'Dulzor sutil a miel y cereal. Cuerpo medio, suave y aromatica.',
+  irish_red: 'Tostada y maltosa. Color rojizo, notas a caramelo y final redondo.',
+  ipa: 'Mas lupulada y aromatica. Amargor marcado, citrica/resinosa segun lote.',
+  stout: 'Oscura y cremosa. Notas a cafe/chocolate, tostado suave y cuerpo medio.',
+};
 
 const ServiceSelector = ({
   modalidad, setModalidad, seleccionBarriles, setSeleccionBarriles,
@@ -19,6 +28,13 @@ const ServiceSelector = ({
     setSeleccionBarriles(prev => ({
       ...prev,
       [tipo]: { ...prev[tipo], litros: Number(litros) }
+    }));
+  };
+
+  const updateEstiloCerveza = (estilo) => {
+    setSeleccionBarriles(prev => ({
+      ...prev,
+      cerveza: { ...prev.cerveza, estilo }
     }));
   };
 
@@ -61,10 +77,29 @@ const ServiceSelector = ({
 
             {seleccionBarriles.cerveza.activo && (
               <div className="animate-fade">
+                <div className="label-gold"><Info size={18} /> Estilo de Cerveza</div>
+                <p className="desc-box">
+                  {DESCRIPCIONES_ESTILOS[seleccionBarriles.cerveza.estilo || 'golden']}
+                </p>
+                <select
+                  id="estiloCerveza"
+                  name="estiloCerveza"
+                  value={seleccionBarriles.cerveza.estilo || 'golden'}
+                  onChange={(e) => updateEstiloCerveza(e.target.value)}
+                  className="input-custom"
+                  aria-label="Estilo de cerveza"
+                >
+                  <option value="golden">Golden</option>
+                  <option value="honey">Honey</option>
+                  <option value="irish_red">Irish Red</option>
+                  <option value="ipa">IPA</option>
+                  <option value="stout">Stout</option>
+                </select>
+
                 <div className="label-gold"><Info size={18} /> Litros de Cerveza</div>
                 <select id="litrosCerveza" name="litrosCerveza" value={seleccionBarriles.cerveza.litros} onChange={(e) => updateLitros('cerveza', e.target.value)} className="input-custom" aria-label="Litros de cerveza">
                   {productos.cerveza.map(b => (
-                    <option key={b.id} value={b.litros}>Barril {b.litros}L - ${b.precio.toLocaleString('es-AR')}</option>
+                    <option key={b.id} value={b.litros}>Barril {b.litros}L - ${calcularPrecioBarrilCerveza(seleccionBarriles.cerveza.estilo || 'golden', b.litros).toLocaleString('es-AR')}</option>
                   ))}
                 </select>
               </div>
