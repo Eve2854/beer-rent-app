@@ -24,7 +24,7 @@ function App() {
   
   // Estado para selección múltiple de barriles
   const [seleccionBarriles, setSeleccionBarriles] = useState({
-    cerveza: { activo: true, litros: 10 },
+    cerveza: { activo: true, litros: 10, estilo: 'golden' },
     gin: { activo: false, litros: 10 }
   });
 
