@@ -13,14 +13,16 @@ import DeliveryForm from './components/DeliveryForm';
 import ReservationInfo from './components/ReservationInfo';
 import PriceSummary from './components/PriceSummary';
 import Footer from './components/Footer';
+import PromoVideo from './components/PromoVideo';
 
 import { useImageSlider } from './hooks/useImageSlider';
 import { calcularPrecioTotal } from './utils/pricing';
 import { buildOrderMessage } from './utils/orderMessage';
-import { ALIAS_MP, IMAGENES_BARRA, IMAGENES_CARRO, IMAGENES_CHOPERA, MP_BACKEND_URL, NUMERO_DUENIO } from './constants/appConstants';
+import { ALIAS_MP, IMAGENES_BARRA, IMAGENES_CARRO, IMAGENES_CHOPERA, MP_BACKEND_URL, NUMERO_DUENIO, VIDEO_PROMOS } from './constants/appConstants';
 
 function App() {
   const [modalidad, setModalidad] = useState('barriles');
+
   
   // Estado para selección múltiple de barriles
   const [seleccionBarriles, setSeleccionBarriles] = useState({
@@ -228,6 +230,7 @@ function App() {
   return (
     <div className="layout-master">
       <Header />
+      <PromoVideo sources={VIDEO_PROMOS} />
 
       <div className="content-grid-stable">
         <ImageSlider 

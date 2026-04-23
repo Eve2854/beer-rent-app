@@ -9,6 +9,9 @@ export const MP_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localh
 // El logo que está en tu carpeta public
 export const LOGO_URL = '/logo.png';
 
+// Videos cortos institucionales (se muestran en la pagina en una seccion propia).
+export const VIDEO_PROMOS = ['/mond.mp4', '/mond1.mp4', '/mond2.mp4'];
+
 export const IMAGENES_CHOPERA = ['/barril1.jpg', '/barril2.jpg', '/barril4.jpg', '/barril5.jpg'];
 export const IMAGENES_BARRA = ['/barra1.jpg', '/barra2.jpg', '/barra3.jpg'];
-export const IMAGENES_CARRO = ['/carro1.jpeg', '/carro2.jpeg', '/carro3.jpeg', '/carro4.jpeg'];
+export const IMAGENES_CARRO = ['/carro1.jpeg', '/carro2.jpeg', '/carro3.jpeg', '/carro4.jpeg', '/carro5.jpeg'];
