@@ -36,6 +36,7 @@ const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || 'primary';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3001/api/google/oauth2callback';
+const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 
 const ensureTokenDir = () => {
   const dir = path.dirname(TOKEN_PATH);
@@ -60,6 +61,22 @@ const saveTokens = (tokens) => {
   fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens, null, 2));
 };
 
+const getTokens = () => {
+  // En hosts con filesystem efímero (Render free), el archivo puede perderse.
+  // Si hay refresh token en env, eso alcanza para refrescar access tokens.
+  const fileTokens = (() => {
+    try {
+      return loadTokens();
+    } catch (_e) {
+      return null;
+    }
+  })();
+
+  if (fileTokens) return fileTokens;
+  if (GOOGLE_REFRESH_TOKEN) return { refresh_token: GOOGLE_REFRESH_TOKEN };
+  return null;
+};
+
 app.get('/api/google/auth/url', (_req, res) => {
   const oauth2Client = getOAuthClient();
   if (!oauth2Client) {
@@ -82,7 +99,16 @@ app.get('/api/google/oauth2callback', async (req, res) => {
     const code = req.query.code;
     if (!code) return res.status(400).send('Codigo no recibido.');
     const { tokens } = await oauth2Client.getToken(code);
-    saveTokens(tokens);
+    // No pisar refresh_token si Google no lo devuelve en re-autorizaciones.
+    const prev = (() => {
+      try {
+        return loadTokens();
+      } catch (_e) {
+        return null;
+      }
+    })();
+    const merged = { ...(prev || {}), ...(tokens || {}) };
+    saveTokens(merged);
     return res.redirect(`${FRONTEND_URL}/?gcal=connected`);
   } catch (err) {
     return res.status(500).send('Error conectando Google Calendar.');
@@ -95,7 +121,7 @@ app.post('/api/google/calendar/event', async (req, res) => {
     if (!oauth2Client) {
       return res.status(500).json({ error: 'GOOGLE_CLIENT_ID/SECRET no configurados.' });
     }
-    const tokens = loadTokens();
+    const tokens = getTokens();
     if (!tokens) {
       return res.status(401).json({ error: 'Google Calendar no conectado.' });
     }
@@ -131,6 +157,10 @@ app.post('/api/google/calendar/event', async (req, res) => {
 
     return res.json({ id: result.data.id, htmlLink: result.data.htmlLink });
   } catch (err) {
+    const status = err?.code || err?.response?.status;
+    if (status === 401 || status === 403) {
+      return res.status(401).json({ error: 'Google Calendar no conectado o credenciales vencidas.' });
+    }
     return res.status(500).json({ error: 'Error creando evento en Google Calendar.' });
   }
 });

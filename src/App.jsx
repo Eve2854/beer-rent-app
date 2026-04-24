@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
@@ -39,6 +39,9 @@ function App() {
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [datos, setDatos] = useState({ nombre: '', dni: '', telefono: '', direccion: '', comentarios: '' });
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+  const paymentInFlightRef = useRef(false);
+  const paymentWindowRef = useRef(null);
 
   const { imagenesActuales, indexImagen, handleUserInteraction, reiniciarSlider, isPaused } = useImageSlider({
     modalidad,
@@ -69,6 +72,16 @@ function App() {
   };
 
   const iniciarPago = async (tipo) => {
+    if (paymentInFlightRef.current) return;
+    paymentInFlightRef.current = true;
+    setIsPaying(true);
+
+    // Abrimos una sola ventana por click para evitar mil pestañas si tarda la API.
+    // Si el navegador bloquea popups, paymentWindowRef puede quedar null y abrimos al final.
+    if (!paymentWindowRef.current || paymentWindowRef.current.closed) {
+      paymentWindowRef.current = window.open('', '_blank');
+    }
+
     try {
       const title = `Reserva ${modalidad === 'barriles' ? 'Barriles' : 'Eventos'} - ${datos.nombre || 'Cliente'}`;
       const response = await fetch(`${MP_BACKEND_URL}/api/mercadopago/preference`, {
@@ -93,11 +106,18 @@ function App() {
       }
       const url = data.init_point || data.sandbox_init_point;
       if (url) {
-        window.open(url, '_blank');
+        if (paymentWindowRef.current && !paymentWindowRef.current.closed) {
+          paymentWindowRef.current.location.href = url;
+        } else {
+          window.open(url, '_blank');
+        }
         return;
       }
       throw new Error('Link de pago no disponible.');
     } catch (err) {
+      if (paymentWindowRef.current && !paymentWindowRef.current.closed) {
+        paymentWindowRef.current.close();
+      }
       Swal.fire({
         icon: 'error',
         title: 'Pago no disponible',
@@ -105,6 +125,9 @@ function App() {
         background: '#111',
         color: '#fff',
       });
+    } finally {
+      paymentInFlightRef.current = false;
+      setIsPaying(false);
     }
   };
 
@@ -268,6 +291,7 @@ function App() {
               metodoPago={metodoPago}
               setMetodoPago={setMetodoPago}
               onPagarAhora={iniciarPago}
+              isPaying={isPaying}
             />
 
             <ReservationInfo modalidad={modalidad} />

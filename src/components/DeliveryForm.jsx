@@ -15,6 +15,7 @@ const DeliveryForm = ({
   metodoPago,
   setMetodoPago,
   onPagarAhora,
+  isPaying,
 }) => (
   <>
     <div className="label-gold">
@@ -108,12 +109,14 @@ const DeliveryForm = ({
         <button
           type="button"
           className="pay-link-btn"
+          disabled={!!isPaying}
           onClick={(e) => {
             e.stopPropagation();
+            if (isPaying) return;
             onPagarAhora('mercadopago');
           }}
         >
-          Pagar ahora
+          {isPaying ? 'Generando link...' : 'Pagar ahora'}
         </button>
       </div>
     </div>
